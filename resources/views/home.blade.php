@@ -27,11 +27,11 @@
 
                         <div class="row">
                             <div class="col-2">
-                            <img width="72px" src="{{ asset('storage/' . $event->photo) }}" alt="">
+                            <img width="72px" src="{{ asset('images/'.$event->photo) }}" alt="">
                             </div>
                             <div class="col-sm">
                                 <p>
-                                    {{ $event->description }}
+                                    {{ Str::limit($event->description, 200, ' ...') }}
                                 </p>
                             </div>
                         </div>

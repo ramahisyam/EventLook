@@ -27,10 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {        
-        $events = Event::where('user_id', Auth::id())->get();
+        $events = Event::where('user_id', Auth::id())->latest()->get();
         return view('home', compact('events'));
     }
-
+    
     public function edit(Event $event)
     {
         return view('edit-event', compact('event'));

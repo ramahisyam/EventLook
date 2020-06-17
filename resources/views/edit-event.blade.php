@@ -95,7 +95,7 @@
                           </div>
                         </div>
 
-                        <img width="50px" class="card-img-top" src="{{ asset('storage/' . $event->photo) }}" alt="Card image cap">
+                        <img width="50px" class="card-img-top" src="{{ asset('images/'.$event->photo) }}" alt="Card image cap">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Foto / Poster</label>
                           <div class="col-sm-10">

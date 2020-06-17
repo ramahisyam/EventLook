@@ -8,23 +8,45 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style type="text/css">
         .h-divider{
-         margin-top:5px;
-         margin-bottom:5px;
-         height:1px;
-         width:100%;
-         border-top:1px solid #D8D8D8;
+            margin-top:5px;
+            margin-bottom:5px;
+            height:1px;
+            width:100%;
+            border-top:1px solid #D8D8D8;
+        }
+        .main {
+            width: 50%;
+            margin: 50px auto;
+        }
+
+        /* Bootstrap 4 text input with search icon */
+
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
         }
     </style>
 </head>
@@ -39,10 +61,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <form class="form-inline">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        <div class="form-inline">
+                            <div class="form-group has-search">
+                                <span class="fa fa-search form-control-feedback"></span>
+                                <input type="text" class="form-control" id="myInput" onkeyup="search()" placeholder="Search for event..">
+                            </div>
+                        </div>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -100,13 +124,13 @@
             <div class="container">
                 <div class="row">
                     @foreach ($events as $event)
-                        <div class="col-3">
+                        <div id="myUL" class="col-3">
                             <div class="card-deck">
                                 <div class="card">
-                                    <img class="card-img-top" src="{{ asset('storage/' . $event->photo) }}" alt="Card image cap">
+                                    <img class="card-img-top" src="{{ asset('images/'.$event->photo) }}" alt="Card image cap">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $event->name }}</h5>
-                                        <p class="card-text">{{ $event->description }}</p>
+                                        <p class="card-text">{{ Str::limit($event->description, 100, ' ...') }}</p>
                                         <button type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#detailModal{{ $event->id }}">Detail</button>
                                     </div>
                                     <div class="card-footer">
@@ -125,7 +149,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="{{ asset('storage/' . $event->photo) }}" class="img-fluid" alt="Responsive image">
+                                        <img src="{{ asset('images/'.$event->photo) }}" class="img-fluid" alt="Responsive image">
                                         <div class="row">
                                             <div class="col">
                                                 <br>
@@ -177,5 +201,23 @@
             </div>
         </main>
     </div>
+    <script>
+        function search() {
+            var input, filter, ul, li, h5, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                h5 = li[i].getElementsByTagName("h5")[0];
+                txtValue = h5.textContent || h5.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
-
+</html>
